@@ -23,6 +23,7 @@
         <style>
             * {
                 box-sizing: content-box;
+                font-family: "Open Sans", Helvetica, sans-serif;
             }
             html, body {
                 text-align: center;
@@ -31,21 +32,115 @@
                 margin: 0;
             }
             body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 min-height: 100vh;
             }
-            h1 {
-                font-size: 4em;
+            main {
+                margin-top: 7em;
                 display: inline-flex;
-                color: #fefefe;
-                font-family: "Open Sans", Helvetica, sans-serif;
-                font-weight: bolder;
-                text-transform: uppercase;
+                width: 100%;
+                max-width: 1280px;
+            }
+            section {
+                padding-left: 1em;
+                padding-right: 1em;
+                flex: 50%;
+            }
+            video {
+                width: 500px;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            h1 {
+                font-size: 3em;
+                text-align: left;
                 text-shadow: 0 0 10px #f50ca0, 0 0 20px #f50ca0, 0 0 30px #f50ca0;
-                max-width: 750px;
+                text-transform: uppercase;
+            }
+            h1, h2 {
+                color: #fefefe;
+                font-weight: bolder;
+            }
+
+            .headline {
+                margin-top: 0
+            }
+
+            /* Form */
+            form {
                 padding: 1em;
+                padding-top: 0;
+                text-align: left;
+                color: #fefefe;
+                display: inline-block;
+            }
+            input {
+                height: 3em;
+                width: 20em;
+                margin: 1em;
+                background: transparent;
+                display: inline-block;
+                border-color: #fefefe;
+                color: #fefefe;
+                border-style: solid;
+                border-radius: 0.5em;
+                padding: 0.5em;
+                text-align: center;
+            }
+            input.submit-button {
+                background: #444;
+            }
+            input.submit-button:hover {
+                cursor: pointer;
+            }
+            ::placeholder {
+                color: #fefefe;
+                opacity: 1;
+            }
+            :-ms-input-placeholder {
+                color: #fefefe;
+                opacity: 1;
+            }
+
+            ::-ms-input-placeholder {
+                color: #fefefe;
+                opacity: 1;
+            }
+
+            /* Header */
+
+            header {
+                color: #fefefe;
+                text-align: left;
+                max-width: 1280px;
+                padding-top: 1em;
+                padding-bottom: 1em;
+                margin-left: 1em;
+                margin-right: 1em;
+                width: 100%;
+                display: inline-block;
+                border-bottom: 2px solid #444;
+            }
+
+            header div.site-title {
+                font-size: 1.5em;
+                float: left;
+            }
+
+            header nav {
+                float: right;
+            }
+
+            /* Smaller screens & mobile */
+            @media screen and (max-width: 1080px) {
+                main {
+                    display: inline-block;
+                    margin-top: 2em;
+                }
+                section {
+                    margin-top: 2em;
+                    margin-bottom: 2em;
+                }
             }
         </style>
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -59,8 +154,54 @@
         </script>
     </head>
     <body>
+        <header>
+            <div class="site-title">CheckmateNFT</div>
+            <!-- <nav>
+                <span style="font-size: 1.5em;">About</span>
+                <span style="font-size: 1.5em; margin-left: 0.5em; margin-right: 0.5em; color: #444;"> • </span>
+                <span style="font-size: 1.5em;">Contact</span>
+            </nav> -->
+        </header>
+        <br/>
         <main>
-            <h1>Limited edition chess NFTs:<br/>coming soon.</h1>
+            <section>
+                <video autoplay muted>
+                    <source src="assets/example_nft.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </section>
+            <section>
+                <form id="waitlist-form">
+                    <h1 class="headline">Limited edition chess NFTs coming soon.</h1>
+                    <h2 class="cta">Sign up for our waitlist today:</h2>
+                    <br/>
+                    <!-- Name field is necessary for Google Form integration -->
+                    <input id="waitlist-form-email" name="entry.1751426634" type="email" placeholder="(enter your email)" required/>
+                    <br/>
+                    <input class="submit-button" type="submit" value="Join waitlist" onsubmit="joinWaitlist()"/>
+                    <br/>
+                    <span id="waitlist-form-info"></span>
+                </form>
+            </section>
         </main>
+        <script>
+            document.getElementById("waitlist-form").addEventListener("submit", joinWaitlist);
+
+        function joinWaitlist(event) {
+
+            var url = "https://docs.google.com/forms/d/e/1FAIpQLSeNAPecff0ieV1DoMSWBTAAzELt3NoTXd4B5_xJupHvlmUieQ/formResponse";
+            var request = new XMLHttpRequest();
+
+            request.open('POST', url, true);
+            request.onreadystatechange = function() {
+                document.getElementById("waitlist-form-info").innerText = "Successfully joined the waitlist.";
+            };
+
+            request.send(new FormData(event.target)); // create FormData from form that triggered event
+            event.preventDefault();
+            document.getElementById('waitlist-form').reset(); // clear form
+            return false;
+        }
+        </script>
     </body>
 </html>
